@@ -13,6 +13,10 @@ let imgThree = document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results-btn');
 let resultsList = document.getElementById('results-container');
 
+// ***** CANVAS ELEMENT FOR CHART DEMO *****
+
+let canvasElem = document.getElementById('chart');
+
 // ***** CONSTRUCTOR FUNCTION *****
 function Product(name, imgExtension = 'jpg'){
     this.name = name;
@@ -55,6 +59,55 @@ myProducts[imgTwoIndex].views++;
 myProducts[imgThreeIndex].views++;
 };
 
+
+// ***** HELPER FUNCTION TO RENDER CHART *****
+function renderChart() {
+    // TODO: Build out my chart object
+    let productNames = [];
+    let productVotes = [];
+    let productViews = [];
+
+    for (let i = 0; i < myProducts.length; i++) {
+        productNames.push(myProducts[i].name);
+        productVotes.push(myProducts[i].votes);
+        productViews.push(myProducts[i].views);
+    }
+
+    // const ctx = document.getElementById('myChart');
+
+    
+    
+    let chartObj = {
+        type: 'bar',
+        data: {
+            labels: productNames,
+            datasets: [{
+                label: '# of Votes',
+                data: productVotes,
+                borderWidth: 1,
+                backgroundColor: 'turquoise'
+            },
+            {
+                label: '# of Views',
+                data: productViews,
+                borderWidth: 1,
+                backgroundColor: 'yellow'
+            
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // TODO: use the Chart Constructor - pass in canvas elem, and my chartObj with all the product data
+    new Chart(canvasElem, chartObj);
+}
+
 //  ***** EVENT HANDLERS *****
 function handleClick(event){
     // TODO: Identify what image was clicked on
@@ -80,12 +133,13 @@ function handleClick(event){
     function handleShowResults(){
     // TODO: Display the results once there are no more votes
         if(votingRounds === 0){
-            for(let i = 0; i < myProducts.length; i++){
-                let liElem = document.createElement('li');
-                liElem.textContent = `${myProducts[i].name} - views: ${myProducts[i].views} & votes: ${myProducts[i].votes}`;
-                resultsList.appendChild(liElem);
-            }
-            resultsBtn.removeEventListener('click', handleShowResults);
+            // for(let i = 0; i < myProducts.length; i++){
+            //     let liElem = document.createElement('li');
+            //     liElem.textContent = `${myProducts[i].name} - views: ${myProducts[i].views} & votes: ${myProducts[i].votes}`;
+            //     resultsList.appendChild(liElem);
+            // }
+            // resultsBtn.removeEventListener('click', handleShowResults);
+            renderChart();
         }
     };
 
