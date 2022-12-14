@@ -158,7 +158,7 @@ function handleClick(event){
     let petsweep = new Product('pet-sweep');
     let scissors = new Product('scissors');
     let shark = new Product('shark');
-    let sweep = new Product('sweep');
+    let sweep = new Product('sweep', 'png');
     let tauntaun = new Product('tauntaun');
     let unicorn = new Product('unicorn');
     let watercan = new Product('water-can');
