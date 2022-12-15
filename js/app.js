@@ -75,7 +75,8 @@ function renderChart() {
 
     // const ctx = document.getElementById('myChart');
 
-    
+    Chart.defaults.font.size = 20;
+    Chart.defaults.font.weight = 'bold';
     
     let chartObj = {
         type: 'bar',
@@ -126,7 +127,17 @@ function handleClick(event){
     renderImg();
     // TODO: once voting rounds have ended - not allow any more clicks
     if(votingRounds === 0){
+        document.querySelector('h3').style.visibility = 'visible';
         imgContainer.removeEventListener('click', handleClick);
+
+        // ***** LOCAL STORAGE STARTS HERE *****
+        //  ! STEP 1 - STRINGIFY DATA FOR LOCAL STORAGE
+        let stringifiedProducts = JSON.stringify(myProducts);
+
+        console.log('Stringified Products', stringifiedProducts);
+
+        // ! STEP 2 - SET TO LOCAL STORAGE
+        localStorage.setItem('myProducts', stringifiedProducts);
     }
 }
 
@@ -144,6 +155,61 @@ function handleClick(event){
     };
 
     // ***** EXECUTABLE CODE *****
+
+    // ***** MORE LOCAL STORAGE DEMO *****
+
+    //  ! STEP 3 - PULL DATA FROM LOCAL STORAGE
+
+    let retrievedProducts = localStorage.getItem('myProducts');
+
+    console.log('retrieved products>>>', retrievedProducts);
+
+    // ! STEP 4 - PARSE OUR LOCAL STORAGE DATA
+
+    let parsedProducts = JSON.parse(retrievedProducts);
+
+    console.log('parsed products >>>', parsedProducts);
+
+
+    // let bag = new Product('bag');
+    // let banana = new Product('banana');
+    // let bathroom = new Product('bathroom');
+    // let boots = new Product('boots');
+    // let breakfast = new Product('breakfast');
+    // let bubblegum = new Product('bubblegum');
+    // let chair = new Product('chair');
+    // let cthulhu = new Product('cthulhu');
+    // let dogduck = new Product('dog-duck');
+    // let dragon = new Product('dragon');
+    // let pen = new Product('pen');
+    // let petsweep = new Product('pet-sweep');
+    // let scissors = new Product('scissors');
+    // let shark = new Product('shark');
+    // let sweep = new Product('sweep', 'png');
+    // let tauntaun = new Product('tauntaun');
+    // let unicorn = new Product('unicorn');
+    // let watercan = new Product('water-can');
+    // let wineglass = new Product('wine-glass');
+
+    // myProducts.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass);
+
+    // ***** REBUILD GOATS USING CONSTRUCTOR *****
+
+    if (retrievedProducts) {
+        for (let i = 0; i < parsedProducts.length; i++){
+           if (parsedProducts[i].name === 'bag') {
+            let reconstructedBag = new Product(parsedProducts[i].name, 'jpg');
+            reconstructedBag.views = parsedProducts[i].views;
+            reconstructedBag.votes = parsedProducts[i].votes;
+            myProducts.push(reconstructedBag);
+        } else {
+            let reconstructedProduct = new Product(parsedProducts[i].name);
+            reconstructedProduct.views = parsedProducts[i].views;
+            reconstructedProduct.votes = parsedProducts[i].votes;
+            myProducts.push(reconstructedProduct);
+        }
+    }
+    } else {
     let bag = new Product('bag');
     let banana = new Product('banana');
     let bathroom = new Product('bathroom');
@@ -165,8 +231,11 @@ function handleClick(event){
     let wineglass = new Product('wine-glass');
 
     myProducts.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass);
+    }
 
+    console.log('products array after if/else', myProducts);
 
+    console.log('Odd Duck ProductsArray', myProducts);
     renderImg();
 
     imgContainer.addEventListener('click', handleClick);
